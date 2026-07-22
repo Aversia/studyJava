@@ -25,7 +25,7 @@ public class Card {
         return limit;
     }
 
-    public String ownerNumber(){
+    public String getOwnerName(){
         return ownerName;
     }
 
@@ -38,17 +38,23 @@ public class Card {
     }
 
     public void withdraw(int amount) {
+        if (amount <= 0) {
+            return;
+        }
         if (balance >= amount) {
             balance = balance - amount;
-        } else {
-            System.out.println("Недостаточно средств");
         }
     }
 
     public void deposit(int amount){
+        if (amount <= 0) {
+            return;
+        }
         balance = balance + amount;
     }
     public boolean canPay(int amount){
-        return !isLimitExceeded(amount) && hasEnoughMoney(amount);
+        return amount > 0
+                && !isLimitExceeded(amount)
+                && hasEnoughMoney(amount);
     }
 }

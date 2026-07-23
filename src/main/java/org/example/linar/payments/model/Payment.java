@@ -28,21 +28,21 @@ public class Payment {
     }
 
 
-    public void markSuccess(){
-        if (getStatus() == PaymentStatus.CREATED) {
+    public void markSuccess() {
+        if (status == PaymentStatus.CREATED) {
             status = PaymentStatus.SUCCESS;
         }
-
     }
-    public void markFailed(){
-        if (getStatus() == PaymentStatus.CREATED){
+
+    public void markFailed() {
+        if (status == PaymentStatus.CREATED) {
             status = PaymentStatus.FAILED;
         }
     }
-    public void markRefunded(){
-        if (getStatus() == PaymentStatus.SUCCESS){
+
+    public void markRefunded() {
+        if (status == PaymentStatus.SUCCESS) {
             status = PaymentStatus.REFUNDED;
         }
-
     }
 }

@@ -29,12 +29,20 @@ public class Payment {
 
 
     public void markSuccess(){
-        status = PaymentStatus.SUCCESS;
+        if (getStatus() == PaymentStatus.CREATED) {
+            status = PaymentStatus.SUCCESS;
+        }
+
     }
     public void markFailed(){
-        status = PaymentStatus.FAILED;
+        if (getStatus() == PaymentStatus.CREATED){
+            status = PaymentStatus.FAILED;
+        }
     }
     public void markRefunded(){
-        status = PaymentStatus.REFUNDED;
+        if (getStatus() == PaymentStatus.SUCCESS){
+            status = PaymentStatus.REFUNDED;
+        }
+
     }
 }

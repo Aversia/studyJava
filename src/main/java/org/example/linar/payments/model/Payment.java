@@ -1,5 +1,4 @@
 package org.example.linar.payments.model;
-import java.util.ArrayList;
 
 public class Payment {
     private int id;

@@ -14,7 +14,9 @@ public class Main {
                 10000
                 );
         Payment payment = new Payment(123, "2200 4532 9873 7827", 200);
-
+        Payment paymentSecond = new Payment(142, "2200 8987 8762 7272", 1000);
+        paymentSecond.markRefunded();
+        System.out.println(paymentSecond.getStatus());
         System.out.println("User name "  + user.getName());
         System.out.println("User balance " + user.getBalance());
         System.out.println("Has enough money? " + card.hasEnoughMoney(10000));

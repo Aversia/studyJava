@@ -4,12 +4,11 @@ import org.example.linar.payments.model.Payment;
 import org.example.linar.payments.model.PaymentStatus;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentServiceTest {
     @Test
-            void shouldPaySuccessfully() {
+    void shouldPaySuccessfully() {
         Card card = new Card("123", "Linar", 1000, 500);
         Payment payment = new Payment(12, "123", 300);
         PaymentService paymentService = new PaymentService();
@@ -20,6 +19,21 @@ public class PaymentServiceTest {
         assertEquals(PaymentStatus.SUCCESS, payment.getStatus());
         assertEquals(700, card.getBalance());
 
+    }
+    @Test
+    void paymentWithInsufficientBalanceShouldFail() {
+        // Arrange
+        Card card = new Card("1234", "Linar", 500, 2000);
+        Payment payment = new Payment(2, "1234", 1000);
+        PaymentService paymentService = new PaymentService();
+
+        // Act
+        boolean result = paymentService.pay(card, payment);
+
+        // Assert
+        assertFalse(result);
+        assertEquals(500, card.getBalance());
+        assertEquals(PaymentStatus.FAILED, payment.getStatus());
     }
 
 

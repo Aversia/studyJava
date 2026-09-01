@@ -6,6 +6,7 @@ import org.example.linar.payments.model.PaymentStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,4 +99,48 @@ public class PaymentServiceTest {
         assertEquals(PaymentStatus.FAILED, payment.getStatus());
         assertEquals(1000, card.getBalance());
     }
+
+    @ParameterizedTest(
+            name = "Баланс = {0}, лимит = {1}, сумма = {2}, результат = {3}"
+    )
+        @CsvSource({
+            "1000, 500, 499, true, 501, SUCCESS",
+            "1000, 500, 500, true, 500, SUCCESS",
+            "1000, 500, 501, false, 1000, FAILED",
+            "500,  1000, 499, true,  1,    SUCCESS",
+            "500,  1000, 500, true,  0,    SUCCESS",
+            "500,  1000, 501, false, 500,  FAILED"
+    })
+    void paymentBoundaryValuesShouldBeHandledCorrectly(
+            int balance,
+            int limit,
+            int amount,
+            boolean expectedResult,
+            int expectedBalance,
+            PaymentStatus expectedStatus
+    ){
+        Card card = new Card(
+                "123412",
+                "Linar",
+                balance,
+                limit
+        );
+        Payment payment = new Payment(
+                12,
+                "123412",
+                amount
+        );
+        PaymentService paymentService = new PaymentService();
+
+        boolean result = paymentService.pay(card, payment);
+
+        assertAll(
+                "Проверка результата платежа",
+                () -> assertEquals(expectedResult, result),
+                () -> assertEquals(expectedBalance, card.getBalance()),
+                () -> assertEquals(expectedStatus, payment.getStatus())
+        );
+
+    }
+
 }

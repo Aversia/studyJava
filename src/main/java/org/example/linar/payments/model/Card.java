@@ -39,7 +39,7 @@ public class Card {
 
     public void withdraw(int amount) {
         if (amount <= 0) {
-            return;
+            throw  new IllegalArgumentException("Amount must be positive");
         }
         if (balance >= amount) {
             balance = balance - amount;
